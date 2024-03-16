@@ -13,8 +13,7 @@ Magic Mouse|$67.99|2|2024/03/15
 we can process its contents like so:
 
 ````kotlin
-class Order(fields: List<String>) :
-    Record(fields) {
+class Order(fields: List<String>) : Record(fields) {
     val name = string(0)
     val price =
         bigDecimal(1, "$###,####.##")
@@ -24,13 +23,13 @@ class Order(fields: List<String>) :
 }
 
 KRecord(::Order, FileReader("orders.txt"), "|")
-    .forEach { order ->
+    .forEach {
         val day =
-            order.deliveryDate.dayOfWeek
+            it.deliveryDate.dayOfWeek
         val total =
-            order.price * order.quantity.toBigDecimal()
+            it.price * it.quantity.toBigDecimal()
         println(
-            "${order.name}: deliver on $day, collect $total")
+            "${it.name}: deliver on $day, collect $total")
     }
 ````
 
