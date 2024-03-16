@@ -3,8 +3,6 @@ package plenix.krecord
 import java.io.StringReader
 import java.math.BigDecimal
 import java.time.LocalDate
-import java.time.format.TextStyle
-import java.util.*
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -24,12 +22,21 @@ class RecordTest {
             val deliveryDate = localDate(3, "yyyy/MM/dd")
         }
 
-        KRecord(::Example, StringReader(lines), Regexes.fromString("|"))
-            .forEach { order ->
-                val weekDay = order.deliveryDate.dayOfWeek
-                val total = order.price * order.quantity.toBigDecimal()
-                println("${order.name}: deliver on $weekDay, collect $total")
-            }
+        val text =
+            KRecord(::Example, StringReader(lines), Regexes.fromString("|"))
+                .map {
+                    val weekDay = it.deliveryDate.dayOfWeek
+                    val total = it.price * it.quantity.toBigDecimal()
+                    "${it.name} (${it.quantity}): deliver on $weekDay, collect $total"
+                }
+                .joinToString("\n")
+        assertEquals(
+            """
+                Mac Air (3): deliver on THURSDAY, collect 3297
+                Magic Mouse (2): deliver on FRIDAY, collect 135.98
+            """.trimIndent(),
+            text
+        )
 
         val result = KRecord(
             new = ::Example,
