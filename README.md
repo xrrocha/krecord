@@ -15,16 +15,21 @@ we can process its contents like so:
 ````kotlin
 class Order(fields: List<String>) : KRecord(fields) {
     val name = string(0)
-    val price = bigDecimal(1, "$###,####.##")
+    val price =
+        bigDecimal(1, "$###,####.##")
     val quantity = int(2)
-    val deliveryDate = localDate(4, "yyyy/MM/dd")
+    val deliveryDate =
+        localDate(4, "yyyy/MM/dd")
 }
 
 KRecord(::Order, FileReader("orders.txt"), "|")
     .forEach { order ->
-        val weekDay = order.deliveryDate.dayOfWeek
-        val total = order.price * order.quantity.toBigDecimal()
-        println("${order.name}: deliver on $weekDay, collect $total")
+        val weekDay =
+            order.deliveryDate.dayOfWeek
+        val total =
+            order.price * order.quantity.toBigDecimal()
+        println(
+            "${order.name}: deliver on $weekDay, collect $total")
     }
 ````
 
