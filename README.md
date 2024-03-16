@@ -3,14 +3,14 @@
 `KRecords` is a lightweight Kotlin library with a humble, yet useful, mission:
 making file record loading easy to write and easy to read.
 
-Thus, the following file (`orders.txt`):
+Thus, given the following file (`orders.txt`):
 
 ````
 Mac Air|$1,099|3|Y|2024-03-14
 Magic Mouse|$67.99|2|N|2024-03-15
 ````
 
-can be processed like so:
+we can process its contents like so:
 
 ````kotlin
 class Order(fields: List<String>) : KRecord(fields) {
