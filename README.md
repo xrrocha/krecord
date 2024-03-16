@@ -1,7 +1,7 @@
 # KRecords: Easy File Loading in Kotlin
 
 `KRecords` is a lightweight Kotlin library with a humble, yet useful, mission:
-making file record loading easy to write and easy to read.
+making file record loading easy to read and easy to write.
 
 Thus, given the following file (`orders.txt`):
 
@@ -13,13 +13,13 @@ Magic Mouse|$67.99|2|2024/03/15
 we can process its contents like so:
 
 ````kotlin
-class Order(fields: List<String>) : Record(fields) {
+class Order(fields: List<String>) : KRecord(fields) {
   val name = string(0)
   val price =
     bigDecimal(1, "$###,####.##")
   val quantity = int(2)
   val deliveryDate =
-    localDate(4, "yyyy/MM/dd")
+    localDate(3, "yyyy/MM/dd")
 }
 
 KRecord(::Order, FileReader("orders.txt"), "|")
