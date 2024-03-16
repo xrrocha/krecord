@@ -24,10 +24,8 @@ class Order(fields: List<String>) : Record(fields) {
 
 KRecord(::Order, FileReader("orders.txt"), "|")
     .forEach {
-        val day =
-            it.deliveryDate.dayOfWeek
-        val total =
-            it.price * it.quantity.toBigDecimal()
+        val day = it.deliveryDate.dayOfWeek
+        val total = it.price * it.quantity.toBigDecimal()
         println(
             "${it.name}: deliver on $day, collect $total")
     }
