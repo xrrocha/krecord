@@ -7,7 +7,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-class RecordTest {
+class XRecordTest {
     @Test
     fun readsRecords() {
         val lines = """
