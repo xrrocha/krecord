@@ -6,8 +6,8 @@ making file record loading easy to read and easy to write.
 Thus, given the following file (`orders.txt`):
 
 ````
-Mac Air|$1,099|3|2024/03/14
-Magic Mouse|$67.99|2|2024/03/15
+Mac Air|$1,099|3|2024/03/14|Y
+Magic Mouse|$67.99|2|2024/03/15|N
 ````
 
 we can process its contents like so:
@@ -20,6 +20,7 @@ class Order(fields: List<String>) : KRecord(fields) {
   val quantity = int(2)
   val deliveryDate =
     localDate(3, "yyyy/MM/dd")
+  val discounted = boolean(4, "Y")
 }
 
 KRecord(::Order, FileReader("orders.txt"), "|")
