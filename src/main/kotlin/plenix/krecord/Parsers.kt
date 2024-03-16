@@ -6,6 +6,8 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
+import kotlin.io.encoding.Base64
+import kotlin.io.encoding.ExperimentalEncodingApi
 import kotlin.reflect.KClass
 
 
@@ -15,6 +17,9 @@ object Parsers {
 
     // TODO Add custom parsers w/their factories
     // TODO Have parse functions accept/return null values?
+
+    fun parseBase64(value: String, mask: String? = null) =
+        parserFor(ByteArray::class, mask)(value)
 
     fun parseBigDecimal(value: String, mask: String? = null) =
         parserFor(BigDecimal::class, mask)(value)
@@ -59,6 +64,8 @@ object Parsers {
         baseParser(BigDecimal::class, String::toBigDecimal),
         baseParser(Boolean::class, String::toBoolean),
         baseParser(Byte::class, String::toByte),
+        @OptIn(ExperimentalEncodingApi::class)
+        baseParser(ByteArray::class) { Base64.decode(it) },
         baseParser(Char::class) { it.toCharArray()[0] },
         baseParser(Double::class, String::toDouble),
         baseParser(Float::class, String::toFloat),
@@ -77,6 +84,7 @@ object Parsers {
         },
     )
 
+    // TODO Abstract DecimalFormat-based parser factories
     private val parserFactories =
         mutableMapOf<KClass<*>, (String) -> ((String) -> Any?)>(
             BigDecimal::class to { mask ->
@@ -88,7 +96,7 @@ object Parsers {
             },
             Boolean::class to { mask ->
                 val trueValue = mask.trim().lowercase();
-                { it.trim().lowercase() == trueValue  }
+                { it.trim().lowercase() == trueValue }
             },
             Double::class to { mask ->
                 DecimalFormat(mask)

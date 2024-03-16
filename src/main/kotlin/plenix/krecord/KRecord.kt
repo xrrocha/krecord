@@ -16,9 +16,12 @@ abstract class KRecord(private val fields: List<String>) {
         ): Sequence<T> {
             val br = BufferedReader(reader)
             return generateSequence { br.readLine() }
-                .map { line -> new(line.split(delim)) }
+                .map { line -> new(delim.split(line)) }
         }
     }
+
+    protected fun base64(fieldIndex: Int, mask: String? = null) =
+        Parsers.parseBase64(fields[fieldIndex], mask)
 
     protected fun bigDecimal(fieldIndex: Int, mask: String? = null) =
         Parsers.parseBigDecimal(fields[fieldIndex], mask)
