@@ -1,7 +1,7 @@
 # KRecords: Easy File Loading in Kotlin
 
 `KRecords` is a lightweight Kotlin library with a humble, yet useful, mission:
-making file record loading easy to write and read.
+making file record loading easy to write and easy to read.
 
 Thus, the following file (`orders.txt`):
 
