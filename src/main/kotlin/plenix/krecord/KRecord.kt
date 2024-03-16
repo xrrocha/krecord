@@ -23,6 +23,9 @@ abstract class KRecord(private val fields: List<String>) {
     protected fun bigDecimal(fieldIndex: Int, mask: String? = null) =
         Parsers.parseBigDecimal(fields[fieldIndex], mask)
 
+    protected fun boolean(fieldIndex: Int, mask: String? = null) =
+        Parsers.parseBoolean(fields[fieldIndex], mask)
+
     protected fun byte(fieldIndex: Int, mask: String? = null) =
         Parsers.parseByte(fields[fieldIndex], mask)
 

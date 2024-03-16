@@ -22,6 +22,9 @@ object Parsers {
     fun parseBigDecimal(value: String, mask: String? = null) =
         parserFor(BigDecimal::class, mask)(value)
 
+    fun parseBoolean(value: String, mask: String? = null) =
+        parserFor(Boolean::class, mask)(value)
+
     fun parseByte(value: String, mask: String? = null) =
         parserFor(Byte::class, mask)(value)
 
@@ -57,6 +60,7 @@ object Parsers {
 
     private val parsers = mutableMapOf<KClass<*>, MutableMap<String?, (String) -> Any?>>(
         baseParser(BigDecimal::class, String::toBigDecimal),
+        baseParser(Boolean::class, String::toBoolean),
         baseParser(Byte::class, String::toByte),
         baseParser(Char::class) { it.toCharArray()[0] },
         baseParser(Double::class, String::toDouble),
@@ -77,13 +81,17 @@ object Parsers {
     )
 
     private val parserFactories =
-        mutableMapOf<KClass<*>, (String?) -> ((String) -> Any?)>(
+        mutableMapOf<KClass<*>, (String) -> ((String) -> Any?)>(
             BigDecimal::class to { mask ->
                 DecimalFormat(mask)
                     .let { format ->
                         format.isParseBigDecimal = true
                         { value -> format.parse(value) as BigDecimal }
                     }
+            },
+            Boolean::class to { mask ->
+                val trueValue = mask.trim().lowercase();
+                { it.trim().lowercase() == trueValue  }
             },
             Double::class to { mask ->
                 DecimalFormat(mask)
@@ -163,7 +171,7 @@ object Parsers {
             .computeIfAbsent(mask) {
                 parserFactories[kClass]
                     ?.let { factory ->
-                        factory(mask)
+                        mask?.let { factory(it) }
                     }
                     ?: throw NoSuchElementException("No parser factory for '${kClass.qualifiedName}'")
             }
