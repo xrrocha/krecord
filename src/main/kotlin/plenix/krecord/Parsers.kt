@@ -13,11 +13,8 @@ typealias Parser<T> = (String) -> T
 
 object Parsers {
 
-    // TODO Have parse function accept/return null values
-    fun <T : Any> parse(kClass: KClass<T>, mask: String?, field: String): T =
-        parserFor(kClass, mask)(field)
-
-    // TODO Add custom parser w/factory
+    // TODO Add custom parsers w/their factories
+    // TODO Have parse functions accept/return null values?
 
     fun parseBigDecimal(value: String, mask: String? = null) =
         parserFor(BigDecimal::class, mask)(value)
@@ -127,7 +124,7 @@ object Parsers {
                 mask
                     .let {
                         it
-                            ?.let { DateTimeFormatter.ofPattern(it) }
+                            .let { DateTimeFormatter.ofPattern(it) }
                             ?: DateTimeFormatter.ISO_LOCAL_DATE
                     }
                     .let { formatter ->
@@ -138,7 +135,7 @@ object Parsers {
                 mask
                     .let {
                         it
-                            ?.let { DateTimeFormatter.ofPattern(it) }
+                            .let { DateTimeFormatter.ofPattern(it) }
                             ?: DateTimeFormatter.ISO_LOCAL_DATE_TIME
                     }
                     .let { formatter ->
@@ -149,7 +146,7 @@ object Parsers {
                 mask
                     .let {
                         it
-                            ?.let { DateTimeFormatter.ofPattern(it) }
+                            .let { DateTimeFormatter.ofPattern(it) }
                             ?: DateTimeFormatter.ISO_LOCAL_TIME
                     }
                     .let { formatter ->
