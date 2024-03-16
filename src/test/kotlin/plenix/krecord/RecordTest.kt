@@ -13,15 +13,15 @@ class RecordTest {
     @Test
     fun readsRecords() {
         val lines = """
-                Mac Air|$1,099|3|2024-03-14
-                Magic Mouse|$67.99|2|2024-03-15
+                Mac Air|$1,099|3|2024/03/14
+                Magic Mouse|$67.99|2|2024/03/15
             """.trimIndent()
 
         class Example(fields: List<String>) : KRecord(fields) {
             val name = string(0)
             val price = bigDecimal(1, "$###,####.##")
             val quantity = int(2)
-            val deliveryDate = localDate(3, "yyyy-MM-dd")
+            val deliveryDate = localDate(3, "yyyy/MM/dd")
         }
 
         KRecord(::Example, StringReader(lines), Regexes.fromString("|"))
